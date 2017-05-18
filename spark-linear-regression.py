@@ -5,9 +5,9 @@ from pyspark.ml.linalg import Vectors
 
 if __name__ == '__main__':
     spark = SparkSession.builder.config('spark.sql.warehouse.dir', 'file:///c:/temp').appName("MLLibLinearRegression").getOrCreate()
-    df = spark.read.csv('file:///SparkCourse/regression.txt')
-    replacements = {"_c0": "labels", "_c1": "features"}
-    df = df.select([col(c).alias(replacements.get(c, c)) for c in df.columns])
+    df = spark.read.csv('file:///SparkCourse/regression.txt')\
+        .withColumnRenamed("_c0", "labels")\
+        .withColumnRenamed("_c1", "features")
 
     trainTest = df.randomSplit([0.5, 0.5])
     train = trainTest[0]
